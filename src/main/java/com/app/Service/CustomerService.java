@@ -16,7 +16,7 @@ public class CustomerService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Customer getCustomerById(String customerId){
+    public Customer getCustomerById(int customerId){
 
         try {
             //calling the pl/sql stored procedure
@@ -24,7 +24,7 @@ public class CustomerService {
                 CallableStatement cs = conn.prepareCall("{call get_customer_details(?,?,?,?)}");
 
                //set input parameters
-               cs.setString(1,customerId);
+               cs.setInt(1,customerId);
 
                 //register outputParameter
                 cs.registerOutParameter(2, Types.VARCHAR);
