@@ -12,12 +12,23 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping(path = "/carts/{cartId}")
-    public Cart getCartByCartId(@PathVariable int  cartId){
+    public Cart getCartByCartId(@PathVariable Integer  cartId){
         return cartService.getCartByCartId(cartId);
     }
 
     @PostMapping(path = "/carts")
     public Cart addToCart(@RequestBody Cart cart){
         return cartService.addToCart(cart);
+    }
+
+    @DeleteMapping(path = "/carts")
+    public Cart removeCart(@RequestParam(required = false) Integer cartId ,@RequestParam(required = false) Integer customerId){
+        if(cartId != null){
+            return cartService.deleteCartByCartId(cartId);
+        } else if (customerId != null) {
+            return cartService.deleteCartByCustomerId(customerId);
+        }else{
+            return null;
+        }
     }
 }
