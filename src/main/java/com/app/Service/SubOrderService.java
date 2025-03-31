@@ -16,7 +16,7 @@ public class SubOrderService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public SubOder getByOrderId(int orderId){
+    public SubOder getBySubOrderId(int orderId){
         try {
             return jdbcTemplate.execute((Connection conn) -> {
                 CallableStatement cs = conn.prepareCall("{call SELECT_SUBORDER_BY_ORDER_ID(?,?,?,?)}");
