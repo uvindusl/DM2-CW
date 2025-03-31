@@ -3,6 +3,7 @@ package com.app.Service;
 import com.app.Entity.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +69,27 @@ public class CartService {
 
                 //return the result
                 return cart;
+
+            });
+        }catch (DataAccessException e){
+            throw new RuntimeException("Error excuting stored procedure", e);
+        }
+    }
+
+    public Cart deleteCartByCustomerId(int customerId){
+        try{
+            //calling the pl/sql stored procedure
+            return jdbcTemplate.execute((Connection conn) -> {
+                CallableStatement cs = conn.prepareCall("{call DELETE_BY_CUSTOMER_ID(?)}");
+
+                //set input parameters
+                cs.setInt(1, customerId);
+
+                //Execute the stored procedure
+                cs.execute();
+
+                //return the result
+                return null;
 
             });
         }catch (DataAccessException e){
