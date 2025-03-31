@@ -51,4 +51,28 @@ public class CartService {
         }
     }
 
+    public Cart addToCart(Cart cart){
+        try{
+            //calling the pl/sql stored procedure
+            return jdbcTemplate.execute((Connection conn) -> {
+                CallableStatement cs = conn.prepareCall("{call INSERT_CART_DATA(?,?,?,?)}");
+
+                //set input parameters
+                cs.setInt(1, cart.getCustomerId());
+                cs.setInt(2, cart.getFoodId());
+                cs.setInt(3, cart.getQty());
+                cs.setInt(4, cart.getSubTotal());
+
+                //Execute the stored procedure
+                cs.execute();
+
+                //return the result
+                return cart;
+
+            });
+        }catch (DataAccessException e){
+            throw new RuntimeException("Error excuting stored procedure", e);
+        }
+    }
+
 }
