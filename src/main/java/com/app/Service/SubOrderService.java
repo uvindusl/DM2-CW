@@ -44,4 +44,26 @@ public class SubOrderService {
             throw new RuntimeException("Error excutng stored procedure", e);
         }
     }
+
+    public SubOder addDataToSubOrder(SubOder subOder){
+        try{
+            return jdbcTemplate.execute((Connection conn) -> {
+                CallableStatement cs = conn.prepareCall("{call INSERT_DATA_TO_SUBORDER(?,?,?,?)}");
+
+                //set input parameter
+                cs.setInt(1, subOder.getCustomerId());
+                cs.setInt(2, subOder.getFoodId());
+                cs.setInt(3, subOder.getQty());
+                cs.setInt(4, subOder.getOrderId());
+
+                //execute the stored procedure
+                cs.execute();
+
+                //return the result
+                return subOder;
+            });
+        }catch (DataAccessException e){
+            throw new RuntimeException("Error excuting stored procedure", e);
+        }
+    }
 }
