@@ -1,4 +1,4 @@
-package com.example.FoodMicroservice_DM2.Entity;
+package com.app.Entity;
 
 public class Food {
     private int foodId;

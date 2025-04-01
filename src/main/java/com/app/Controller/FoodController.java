@@ -1,7 +1,7 @@
-package com.example.FoodMicroservice_DM2.Controller;
+package com.app.Controller;
 
-import com.example.FoodMicroservice_DM2.Entity.Food;
-import com.example.FoodMicroservice_DM2.Service.FoodService;
+import com.app.Entity.Food;
+import com.app.Service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

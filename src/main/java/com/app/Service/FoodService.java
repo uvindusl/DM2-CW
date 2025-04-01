@@ -1,6 +1,6 @@
-package com.example.FoodMicroservice_DM2.Service;
+package com.app.Service;
 
-import com.example.FoodMicroservice_DM2.Entity.Food;
+import com.app.Entity.Food;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
