@@ -107,4 +107,30 @@ public class CustomerService {
 
         }
     }
+
+    public Customer updateCustomer(int id,Customer customer){
+        try{
+            //calling pl/sql stored procedure
+            return jdbcTemplate.execute((Connection conn)->{
+                CallableStatement cs = conn.prepareCall("{call update_customer(?,?,?,?)}");
+
+                //set input parameters
+                cs.setInt(1,customer.getCustomerId());
+                cs.setString(2, customer.getCustomerName());
+                cs.setString(3, customer.getCustomerAddress());
+                cs.setInt(4,customer.getCustomerTel());
+
+                //Execute the stored procedure
+                cs.execute();
+
+                //return the result
+                return customer;
+
+            });
+
+        }catch (DataAccessException e){
+            throw new RuntimeException("Error executing stored procedure",e);
+
+        }
+    }
 }

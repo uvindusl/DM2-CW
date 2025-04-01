@@ -28,4 +28,9 @@ public class CustomerController {
     public Customer createCustomer(@RequestBody Customer customer){
         return customerService.createCustomer(customer);
     }
+
+    @PutMapping(path="/customers/{customerId}")
+    public Customer updateCustomer(@PathVariable int id, @RequestBody Customer customer){
+        return customerService.updateCustomer(id,customer);
+    }
 }

@@ -48,4 +48,22 @@ BEGIN
         p_customer_tel
         );
 END create_customer;
+
+--------update------------------------------------------------------
+CREATE OR REPLACE PROCEDURE update_customer(
+    p_customer_id IN NUMBER,
+    p_customer_name IN VARCHAR2,
+    p_customer_address IN VARCHAR2,
+    p_customer_tel IN NUMBER
+    )
+IS
+BEGIN
+    UPDATE customer_table
+    SET 
+    customer_name = p_customer_name,
+    customer_address = p_customer_address,
+    customer_tel = p_customer_tel
+    WHERE
+    customer_id = p_customer_id;   
+END;
     
