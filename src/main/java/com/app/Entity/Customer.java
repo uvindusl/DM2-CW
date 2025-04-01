@@ -1,14 +1,24 @@
 package com.app.Entity;
 
 public class Customer {
+    private int customerId;
     private String customerName;
     private String customerAddress;
     private int customerTel;
 
-    public Customer(String customerName, String customerAddress, int customerTel) {
+    public Customer(int customerId,String customerName, String customerAddress, int customerTel) {
+        this.customerId = customerId;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerTel = customerTel;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     public String getCustomerName() {

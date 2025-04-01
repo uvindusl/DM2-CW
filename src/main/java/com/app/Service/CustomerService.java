@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CustomerService {
@@ -40,13 +43,43 @@ public class CustomerService {
                 int customerTel = cs.getInt(4);
 
                 //return the result
-                return new Customer(customerName,customerAddress,customerTel);
+                return new Customer(customerId,customerName,customerAddress,customerTel);
             });
         }
         catch (DataAccessException e){
-            throw new RuntimeException("Error excuting stored procedure",e);
+            throw new RuntimeException("Error executing stored procedure",e);
 
         }
+    }
 
+    public List<Customer> getAllCustomers(){
+        try{
+            //calling pl/sql stored procedure
+            return jdbcTemplate.execute((Connection conn)->{
+                CallableStatement cs = conn.prepareCall("{call get_all_customers(?)}");
+
+                //register outputParameter
+                cs.registerOutParameter(1,Types.REF_CURSOR);
+
+                //Execute the stored procedure
+                cs.execute();
+
+                ResultSet rs = (ResultSet) cs.getObject(1);
+                List<Customer> customerList = new ArrayList<>();
+                while (rs.next())
+                {
+                    customerList.add(new Customer(
+                            rs.getInt("customer_id"),
+                            rs.getString("customer_name"),
+                            rs.getString("customer_address"),
+                            rs.getInt("customer_tel")
+                    ));
+                }
+                return customerList;
+            });
+
+        }catch (DataAccessException e){
+            throw new RuntimeException("Error executing stored procedure",e);
+        }
     }
 }
