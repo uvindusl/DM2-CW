@@ -108,7 +108,7 @@ public class CustomerService {
         }
     }
 
-    public Customer updateCustomer(int id,Customer customer){
+    public Customer updateCustomer(int customerId,Customer customer){
         try{
             //calling pl/sql stored procedure
             return jdbcTemplate.execute((Connection conn)->{
@@ -123,6 +123,9 @@ public class CustomerService {
                 //Execute the stored procedure
                 cs.execute();
 
+                System.out.println("Updating customer with ID: " + customerId);
+                System.out.println("Customer details: " + customer);
+
                 //return the result
                 return customer;
 
@@ -134,14 +137,14 @@ public class CustomerService {
         }
     }
 
-    public Customer deleteCustomer(int id){
+    public Customer deleteCustomer(int customerId){
         try{
             //calling the pl/sql stored procedure
             return jdbcTemplate.execute((Connection conn)->{
             CallableStatement cs = conn.prepareCall("{call delete_customer(?)}");
 
             //set input parameters
-            cs.setInt(1,id);
+            cs.setInt(1,customerId);
 
             //Execute the stored procedure
             cs.execute();
@@ -155,5 +158,6 @@ public class CustomerService {
             throw new RuntimeException("Error executing stored procedure",e);
 
         }
+
     }
 }

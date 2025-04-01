@@ -30,12 +30,12 @@ public class CustomerController {
     }
 
     @PutMapping(path="/customers/{customerId}")
-    public Customer updateCustomer(@PathVariable int id, @RequestBody Customer customer){
-        return customerService.updateCustomer(id,customer);
+    public Customer updateCustomer(@PathVariable int customerId, @RequestBody Customer customer){
+        return customerService.updateCustomer(customerId,customer);
     }
 
     @DeleteMapping(path="/customers/{customerId}")
-    public Customer deletCustomer(@PathVariable int id){
-        return customerService.deleteCustomer(id);
+    public Customer deletCustomer(@PathVariable int customerId){
+        return customerService.deleteCustomer(customerId);
     }
 }
