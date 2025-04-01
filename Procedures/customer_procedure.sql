@@ -1,3 +1,4 @@
+---------------------------------------------------
 CREATE OR REPLACE PROCEDURE get_customer_details(
     p_customer_id IN VARCHAR2,
     p_customer_name OUT VARCHAR2,
@@ -20,3 +21,14 @@ BEGIN
     WHERE
         CUSTOMER_ID = p_customer_id;
 END get_customer_details;       
+
+--------------------------------------------------------
+CREATE OR REPLACE PROCEDURE get_all_customers(p_customers OUT SYS_REFCURSOR)
+AS
+BEGIN
+    OPEN p_customers FOR
+    SELECT * FROM CUSTOMER_TABLE;
+END;
+-----------------------------------------------------------
+
+    
