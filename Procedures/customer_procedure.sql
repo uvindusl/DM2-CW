@@ -66,4 +66,13 @@ BEGIN
     WHERE
     customer_id = p_customer_id;   
 END;
+--------delete----------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE delete_customer(p_customer_id IN NUMBER)
+IS
+BEGIN
+    DELETE FROM customer_table
+    WHERE customer_id = p_customer_id;
+END delete_customer;
+    
+
     

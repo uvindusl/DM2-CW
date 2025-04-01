@@ -133,4 +133,27 @@ public class CustomerService {
 
         }
     }
+
+    public Customer deleteCustomer(int id){
+        try{
+            //calling the pl/sql stored procedure
+            return jdbcTemplate.execute((Connection conn)->{
+            CallableStatement cs = conn.prepareCall("{call delete_customer(?)}");
+
+            //set input parameters
+            cs.setInt(1,id);
+
+            //Execute the stored procedure
+            cs.execute();
+
+            //return the result
+            return null;
+
+        });
+
+        }catch (DataAccessException e){
+            throw new RuntimeException("Error executing stored procedure",e);
+
+        }
+    }
 }

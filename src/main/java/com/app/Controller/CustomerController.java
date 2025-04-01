@@ -33,4 +33,9 @@ public class CustomerController {
     public Customer updateCustomer(@PathVariable int id, @RequestBody Customer customer){
         return customerService.updateCustomer(id,customer);
     }
+
+    @DeleteMapping(path="/customers/{customerId}")
+    public Customer deletCustomer(@PathVariable int id){
+        return customerService.deleteCustomer(id);
+    }
 }
