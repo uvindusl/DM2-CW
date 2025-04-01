@@ -162,41 +162,68 @@ public class CustomerService {
 
     }
 
-    public Customer loginCustomer(String customerName, int customerTel){
-        try{
-            //calling the pl/sql stored procedure
-            return jdbcTemplate.execute((Connection conn)->{
-                CallableStatement cs = conn.prepareCall("{call login_customer(?,?)}");
+//    public Customer loginCustomer(String customerName, int customerTel){
+//        try{
+//            //calling the pl/sql stored procedure
+//            return jdbcTemplate.execute((Connection conn)->{
+//                CallableStatement cs = conn.prepareCall("{call login_customer(?,?)}");
+//
+//                //set input parameters
+//                cs.setString(1,customerName);
+//                cs.setInt(2,customerTel);
+//
+//                //register outputParameter
+//                cs.registerOutParameter(1, Types.VARCHAR);
+//                cs.registerOutParameter(2,Types.INTEGER);
+//
+//                //Execute the stored procedure
+//                cs.execute();
+//
+//                //get the output parameter
+//                String name = cs.getString(1);
+//                String tel = cs.getString(2);
+//
+//                System.out.println("check name: " + customerName);
+//                System.out.println("check tels: " + customerTel);
+//               // System.out.println("check result: " + result);
+//
+//                //return the result
+//                return null;
+//               // return loginCustomer(customerName,customerTel);
+//
+//            });
+//
+//        }catch (DataAccessException e){
+//            throw new RuntimeException("Error executing stored procedure",e);
+//
+//        }
+//
+//    }
 
-                //set input parameters
-                cs.setString(1,customerName);
-                cs.setInt(2,customerTel);
+    public Customer loginCustomer(String customerName,int customerTel) {
+        Customer customer = null;
+        try {
+            customer = jdbcTemplate.execute((Connection conn) -> {
+                CallableStatement cs = conn.prepareCall("{call login_customer(?,?,?)}");
 
-                //register outputParameter
-                cs.registerOutParameter(1, Types.VARCHAR);
-                cs.registerOutParameter(2,Types.INTEGER);
+                cs.setString(1, customerName);
+                cs.setInt(2, customerTel);
 
-                //Execute the stored procedure
+                cs.registerOutParameter(3, Types.NUMERIC);
+
                 cs.execute();
 
-                //get the output parameter
-                String name = cs.getString(1);
-                String tel = cs.getString(2);
+                int id = cs.getInt(3);
 
-                System.out.println("check name: " + customerName);
-                System.out.println("check tels: " + customerTel);
-               // System.out.println("check result: " + result);
-
-                //return the result
-                return null;
-               // return loginCustomer(customerName,customerTel);
-
+                if (id > 0) {
+                    return new Customer(id);
+                } else {
+                    return null;
+                }
             });
-
-        }catch (DataAccessException e){
-            throw new RuntimeException("Error executing stored procedure",e);
-
+        } catch (Exception e) {
+            throw new RuntimeException("error" , e);
         }
-
+        return customer;
     }
 }

@@ -4,6 +4,8 @@ package com.app.Controller;
 import com.app.Entity.Customer;
 import com.app.Service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,9 +41,40 @@ public class CustomerController {
         return customerService.deleteCustomer(customerId);
     }
 
-    @GetMapping(path="/customers", params={"customerName", "customerTel"})
-    public Customer loginCustomer(@RequestParam String customerName,@RequestParam int customerTel){
-        return customerService.loginCustomer(customerName,customerTel);
+//    @GetMapping(path="/customers", params={"customerName", "customerTel"})
+//    public Customer loginCustomer(@RequestParam String customerName,@RequestParam int customerTel){
+//        return customerService.loginCustomer(customerName,customerTel);
+//    }
+//    //http://localhost:8080/customers?customerName=uvindu&customerTel=1234567890
+
+    @PostMapping("/customers/login")
+    private ResponseEntity<Customer> loginCustomer(@RequestBody LoginRequest loginRequest) {
+        Customer customer = customerService.loginCustomer(loginRequest.getName(), loginRequest.getTel());
+        if(customer != null){
+            return ResponseEntity.ok(customer);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
-    //http://localhost:8080/customers?customerName=uvindu&customerTel=1234567890
+
+    static class LoginRequest {
+        private String name;
+        private int tel;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getTel() {
+            return tel;
+        }
+
+        public void setPassword(int tel) {
+            this.tel = tel;
+        }
+    }
 }

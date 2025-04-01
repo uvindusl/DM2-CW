@@ -75,7 +75,7 @@ BEGIN
 END delete_customer;
 
 ---------login---------------------------------------------------------------
-CREATE OR REPLACE PROCEDURE login_customer(
+/*CREATE OR REPLACE PROCEDURE login_customer(
         p_customer_name IN OUT VARCHAR2,
         p_customer_tel IN OUT NUMBER
       --  result OUT VARCHAR2
@@ -101,6 +101,23 @@ BEGIN
         
     END IF; 
     
-END login_customer;
+END login_customer; */
+
+CREATE OR REPLACE PROCEDURE login_customer(
+    NAME IN VARCHAR2,
+    TEL IN NUMBER,
+    ID OUT NUMBER
+)
+IS
+BEGIN
+    SELECT customer_id
+    INTO ID
+    FROM customer_table
+    WHERE customer_name = NAME AND customer_tel = TEL;
+    
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        ID := 0;
+END;
 
     

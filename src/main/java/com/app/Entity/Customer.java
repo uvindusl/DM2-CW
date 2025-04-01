@@ -13,6 +13,10 @@ public class Customer {
         this.customerTel = customerTel;
     }
 
+    public Customer(int id) {
+
+    }
+
     public int getCustomerId() {
         return customerId;
     }
