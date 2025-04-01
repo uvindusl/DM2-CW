@@ -14,7 +14,7 @@ public class Customer {
     }
 
     public Customer(int id) {
-
+        this.customerId=id;
     }
 
     public int getCustomerId() {
