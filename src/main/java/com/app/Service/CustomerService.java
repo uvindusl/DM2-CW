@@ -82,4 +82,29 @@ public class CustomerService {
             throw new RuntimeException("Error executing stored procedure",e);
         }
     }
+
+    public Customer createCustomer(Customer customer){
+
+        try {
+            //calling the pl/sql stored procedure
+            return jdbcTemplate.execute((Connection conn)-> {
+                CallableStatement cs = conn.prepareCall("{call create_customer(?,?,?)}");
+
+                //set input parameters
+                cs.setString(1, customer.getCustomerName());
+                cs.setString(2, customer.getCustomerAddress());
+                cs.setInt(3,customer.getCustomerTel());
+
+                //Execute the stored procedure
+                cs.execute();
+
+                //return the result
+                return customer;
+            });
+        }
+        catch (DataAccessException e){
+            throw new RuntimeException("Error executing stored procedure",e);
+
+        }
+    }
 }
