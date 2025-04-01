@@ -8,13 +8,23 @@ public class Supplier {
     private String company;
     private String password;
 
-    public Supplier(String name, String address, int tell, String company, String password) {
+    public Supplier(){
+        this.id = id;
         this.name = name;
         this.address = address;
         this.tell = tell;
         this.company = company;
         this.password = password;
     }
+    public Supplier(String name, String address, int tell, String company, String password) {
+
+        this.name = name;
+        this.address = address;
+        this.tell = tell;
+        this.company = company;
+        this.password = password;
+    }
+
 
     public Supplier(int id) {
         this.id = id;
