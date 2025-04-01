@@ -38,4 +38,10 @@ public class CustomerController {
     public Customer deletCustomer(@PathVariable int customerId){
         return customerService.deleteCustomer(customerId);
     }
+
+    @GetMapping(path="/customers", params={"customerName", "customerTel"})
+    public Customer loginCustomer(@RequestParam String customerName,@RequestParam int customerTel){
+        return customerService.loginCustomer(customerName,customerTel);
+    }
+    //http://localhost:8080/customers?customerName=uvindu&customerTel=1234567890
 }

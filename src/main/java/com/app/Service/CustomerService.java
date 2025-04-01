@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -123,8 +124,8 @@ public class CustomerService {
                 //Execute the stored procedure
                 cs.execute();
 
-                System.out.println("Updating customer with ID: " + customerId);
-                System.out.println("Customer details: " + customer);
+//                System.out.println("Updating customer with ID: " + customerId);
+//                System.out.println("Customer details: " + customer);
 
                 //return the result
                 return customer;
@@ -153,6 +154,44 @@ public class CustomerService {
             return null;
 
         });
+
+        }catch (DataAccessException e){
+            throw new RuntimeException("Error executing stored procedure",e);
+
+        }
+
+    }
+
+    public Customer loginCustomer(String customerName, int customerTel){
+        try{
+            //calling the pl/sql stored procedure
+            return jdbcTemplate.execute((Connection conn)->{
+                CallableStatement cs = conn.prepareCall("{call login_customer(?,?)}");
+
+                //set input parameters
+                cs.setString(1,customerName);
+                cs.setInt(2,customerTel);
+
+                //register outputParameter
+                cs.registerOutParameter(1, Types.VARCHAR);
+                cs.registerOutParameter(2,Types.INTEGER);
+
+                //Execute the stored procedure
+                cs.execute();
+
+                //get the output parameter
+                String name = cs.getString(1);
+                String tel = cs.getString(2);
+
+                System.out.println("check name: " + customerName);
+                System.out.println("check tels: " + customerTel);
+               // System.out.println("check result: " + result);
+
+                //return the result
+                return null;
+               // return loginCustomer(customerName,customerTel);
+
+            });
 
         }catch (DataAccessException e){
             throw new RuntimeException("Error executing stored procedure",e);

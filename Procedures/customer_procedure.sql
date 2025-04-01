@@ -73,6 +73,34 @@ BEGIN
     DELETE FROM customer_table
     WHERE customer_id = p_customer_id;
 END delete_customer;
+
+---------login---------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE login_customer(
+        p_customer_name IN OUT VARCHAR2,
+        p_customer_tel IN OUT NUMBER
+      --  result OUT VARCHAR2
+    )
+IS
+    name VARCHAR2(25);
+    tel NUMBER;
+BEGIN
+    SELECT customer_name INTO name FROM customer_table WHERE customer_name = p_customer_name ; 
+    SELECT customer_tel INTO tel FROM customer_table WHERE customer_tel = p_customer_tel;
+
+   IF p_customer_name=name AND p_customer_tel=tel THEN
     
+        --result:= 'login sucsses';
+        p_customer_name:=p_customer_name;
+        p_customer_tel:=p_customer_tel;
+    
+    ELSE
+    
+        p_customer_name:='0';
+        p_customer_tel:=0;
+      --  result:= 'login faild';
+        
+    END IF; 
+    
+END login_customer;
 
     
