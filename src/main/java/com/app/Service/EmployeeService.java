@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Types;
+import java.util.List;
 
 @Service
 public class EmployeeService {
@@ -53,4 +54,20 @@ public class EmployeeService {
         }
     }
 
+    public List<Employee> getAllEployees(){
+        try{
+            //calling pl/sql stored procedure
+            return jdbcTemplate.execute((Connection conn)->{
+               CallableStatement cs = conn.prepareCall("{call get_all_EMPLOYEES(?)}");
+
+               //regisater outPutParameter
+                cs.registerOutParameter(1,Types.REF_CURSOR);
+
+                //
+            });
+        }catch (DataAccessException e){
+            throw new RuntimeException("Error executing stored procedure",e);
+
+        }
+    }
 }

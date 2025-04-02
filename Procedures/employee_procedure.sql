@@ -23,4 +23,12 @@ BEGIN
         EMPLOYEE_TABLE
     WHERE
         EMPLOYEE_ID = p_employee_id;
-END get_employee_details;       
+END get_employee_details;   
+
+-------select all-----------------------------------------------
+CREATE or REPLACE PROCEDURE get_all_EMPLOYEE(p_employees OUT SYS_REFCURSOR)
+AS
+BEGIN
+    OPEN  p_employees FOR
+    SELECT * FROM EMPLOYEE_TABLE;
+END;
