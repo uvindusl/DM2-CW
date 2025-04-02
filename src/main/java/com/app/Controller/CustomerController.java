@@ -49,7 +49,7 @@ public class CustomerController {
 
     @PostMapping("/customers/login")
     private ResponseEntity<Customer> loginCustomer(@RequestBody LoginRequest loginRequest) {
-        Customer customer = customerService.loginCustomer(loginRequest.getName(), loginRequest.getTel());
+        Customer customer = customerService.loginCustomer(loginRequest.getCustomerName(), loginRequest.getCustomerTel());
         if(customer != null){
             return ResponseEntity.ok(customer);
         }else{
@@ -58,23 +58,23 @@ public class CustomerController {
     }
 
     static class LoginRequest {
-        private String name;
-        private int tel;
+        private String customerName;
+        private int customerTel;
 
-        public String getName() {
-            return name;
+        public String getCustomerName() {
+            return customerName;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setCustomerName(String customerName) {
+            this.customerName = customerName;
         }
 
-        public int getTel() {
-            return tel;
+        public int getCustomerTel() {
+            return customerTel;
         }
 
-        public void setPassword(int tel) {
-            this.tel = tel;
+        public void setCustomerTel(int customerTel) {
+            this.customerTel = customerTel;
         }
     }
 }
