@@ -1,5 +1,6 @@
+-----select one----------------------------------------------
 CREATE OR REPLACE PROCEDURE get_employee_details(
-    p_employee_id IN VARCHAR2,
+    p_employee_id IN NUMBER,
     p_employee_name OUT VARCHAR2,
     p_employee_address OUT VARCHAR2,
     p_employee_tel OUT NUMBER,
