@@ -111,4 +111,30 @@ public class EmployeeService {
         }
 
     }
+
+    public Employee updateEmployee(int employeeId,Employee employee){
+        try{
+            //calling the pl/sql stored procedure
+            return jdbcTemplate.execute((Connection conn)->{
+                CallableStatement cs = conn.prepareCall("{call update_employee(?,?,?,?,?)}");
+
+                //set input parameters
+                cs.setInt(1,employee.getEmployeeId());
+                cs.setString(2,employee.getEmployeeName());
+                cs.setString(3,employee.getEmployeeAddress());
+                cs.setInt(4,employee.getEmployeeTel());
+                cs.setString(5, employee.getEmployeePassword());
+
+                //Execute the stored procedure
+                cs.execute();
+
+                //return the result
+                return employee;
+            });
+        } catch (DataAccessException e){
+            throw new RuntimeException("Error executing stored procedure",e);
+
+        }
+
+    }
 }
