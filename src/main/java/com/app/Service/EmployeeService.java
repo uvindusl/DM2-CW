@@ -2,7 +2,6 @@ package com.app.Service;
 
 import com.app.Entity.Employee;
 
-import com.app.Entity.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,7 +36,7 @@ public class EmployeeService {
                 cs.registerOutParameter(4, Types.INTEGER);
                 cs.registerOutParameter(5, Types.VARCHAR);
 
-                //Execute the stored precedure
+                //Execute the stored procedure
                 cs.execute();
 
                 //get the output parameter
@@ -54,20 +55,60 @@ public class EmployeeService {
         }
     }
 
-    public List<Employee> getAllEployees(){
+    public List<Employee> getAllEmployees(){
         try{
             //calling pl/sql stored procedure
             return jdbcTemplate.execute((Connection conn)->{
-               CallableStatement cs = conn.prepareCall("{call get_all_EMPLOYEES(?)}");
+               CallableStatement cs = conn.prepareCall("{call get_all_employees(?)}");
 
-               //regisater outPutParameter
+               //register outPutParameter
                 cs.registerOutParameter(1,Types.REF_CURSOR);
 
-                //
+                //Execute the procedure
+                cs.execute();
+
+                ResultSet rs = (ResultSet) cs.getObject(1);
+                List<Employee> employeeList = new ArrayList<>();
+                while (rs.next())
+                {
+                    employeeList.add(new Employee(
+                            rs.getInt("employee_id"),
+                            rs.getString("employee_name"),
+                            rs.getString("employee_address"),
+                            rs.getInt("employee_tel"),
+                            rs.getString("employee_password")
+                    ));
+                }
+                return employeeList;
             });
         }catch (DataAccessException e){
             throw new RuntimeException("Error executing stored procedure",e);
 
         }
+    }
+
+    public Employee createEmployee(Employee employee){
+        try{
+            //calling the pl/sql stored procedure
+            return jdbcTemplate.execute((Connection conn)->{
+                CallableStatement cs = conn.prepareCall("{call create_employee(?,?,?,?)}");
+
+                //set input parameters
+                cs.setString(1,employee.getEmployeeName());
+                cs.setString(2,employee.getEmployeeAddress());
+                cs.setInt(3,employee.getEmployeeTel());
+                cs.setString(4, employee.getEmployeePassword());
+
+                //Execute the stored procedure
+                cs.execute();
+
+                //return the result
+                return employee;
+            });
+        } catch (DataAccessException e){
+            throw new RuntimeException("Error executing stored procedure",e);
+
+        }
+
     }
 }

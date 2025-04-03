@@ -26,7 +26,7 @@ BEGIN
 END get_employee_details;   
 
 -------select all-----------------------------------------------
-CREATE or REPLACE PROCEDURE get_all_EMPLOYEE(p_employees OUT SYS_REFCURSOR)
+CREATE or REPLACE PROCEDURE get_all_EMPLOYEES(p_employees OUT SYS_REFCURSOR)
 AS
 BEGIN
     OPEN  p_employees FOR

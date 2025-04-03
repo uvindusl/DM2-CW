@@ -1,6 +1,6 @@
 -----select one----------------------------------------------
 CREATE OR REPLACE PROCEDURE get_customer_details(
-    p_customer_id IN VARCHAR2,
+    p_customer_id IN NUMBER,
     p_customer_name OUT VARCHAR2,
     p_customer_address OUT VARCHAR2,
     p_customer_tel OUT NUMBER
