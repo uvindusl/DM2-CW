@@ -7,6 +7,9 @@ public class Employee {
     private int employeeTel;
     private String employeePassword;
 
+    public Employee(){
+    }
+
     public Employee(int employeeId, String employeeName, String employeeAddress, int employeeTel, String employeePassword) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
