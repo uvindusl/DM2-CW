@@ -137,4 +137,25 @@ public class EmployeeService {
         }
 
     }
+
+    public Employee deleteEmployee(int employeeId){
+        try{
+            //calling the pl/sql stored procedure
+            return jdbcTemplate.execute((Connection conn)->{
+               CallableStatement cs = conn.prepareCall("{call delete_employee(?)}");
+
+                //set input parameters
+                cs.setInt(1,employeeId);
+
+                //execute stored procedure
+                cs.execute();
+
+                //return the result
+                return null;
+            });
+
+        }catch (DataAccessException e){
+            throw new RuntimeException("Error executing stored procedue",e);
+        }
+    }
 }

@@ -73,3 +73,11 @@ BEGIN
     WHERE
     employee_id = p_employee_id;
 END update_employee;
+
+--------------delete-----------------------------------------
+CREATE OR REPLACE PROCEDURE delete_employee(p_employee_id IN NUMBER)
+IS
+BEGIN
+    DELETE FROM employee_table
+    WHERE employee_id = p_employee_id;
+END delete_employee;
