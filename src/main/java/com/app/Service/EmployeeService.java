@@ -155,7 +155,34 @@ public class EmployeeService {
             });
 
         }catch (DataAccessException e){
-            throw new RuntimeException("Error executing stored procedue",e);
+            throw new RuntimeException("Error executing stored procedure",e);
         }
+    }
+
+    public Employee loginEmployee(String employeeName,String employeePassword){
+        Employee employee = null;
+        try{
+            employee =jdbcTemplate.execute((Connection conn)->{
+                CallableStatement cs = conn.prepareCall("{call login_employee(?,?,?)}");
+
+                cs.setString(1,employeeName);
+                cs.setString(2,employeePassword);
+
+                cs.registerOutParameter(3,Types.NUMERIC);
+
+                cs.execute();
+
+                int id = cs.getInt(3);
+
+                if(id>0){
+                    return new Employee(id);
+                }else{
+                    return null;
+                }
+            });
+        }catch (DataAccessException e){
+            throw new RuntimeException("Error executing stored procedure",e);
+        }
+        return employee;
     }
 }

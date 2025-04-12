@@ -1,9 +1,10 @@
 package com.app.Controller;
 
-import com.app.Entity.Customer;
 import com.app.Entity.Employee;
 import com.app.Service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,5 +38,36 @@ public class EmployeeController {
     @DeleteMapping(path="/employees/{employeeId}")
     public Employee deleteEmployee(@PathVariable int employeeId){
         return employeeService.deleteEmployee(employeeId);
+    }
+
+    @PostMapping("/employees/login")
+    private ResponseEntity<Employee> loginEmployee(@RequestBody LoginRequest loginRequest){
+        Employee employee = employeeService.loginEmployee(loginRequest.getEmployeeName(), loginRequest.getEmployeePassword());
+        if(employee != null){
+            return ResponseEntity.ok(employee);
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    static class LoginRequest{
+        private String employeeName;
+        private String employeePassword;
+
+        public String getEmployeeName(){
+            return employeeName;
+        }
+
+        public void setEmployeeName(String employeeName){
+            this.employeeName = employeeName;
+        }
+
+        public String getEmployeePassword(){
+            return employeePassword;
+        }
+
+        public void setEmployeePassword(String employeePassword){
+            this.employeePassword = employeePassword;
+        }
     }
 }

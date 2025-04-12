@@ -81,3 +81,19 @@ BEGIN
     DELETE FROM employee_table
     WHERE employee_id = p_employee_id;
 END delete_employee;
+
+-------------login----------------------------------------
+CREATE OR REPLACE PROCEDURE login_employee(
+    NAME IN VARCHAR2,
+    PASSWORD IN VARCHAR2,
+    ID OUT NUMBER
+    )
+    IS
+    BEGIN
+        SELECT employee_id
+        INTO ID
+        FROM employee_table
+        WHERE employee_name = NAME AND employee_password = PASSWORD;
+   END;     
+
+        
