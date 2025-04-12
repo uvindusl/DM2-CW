@@ -119,7 +119,7 @@ public class EmployeeService {
                 CallableStatement cs = conn.prepareCall("{call update_employee(?,?,?,?,?)}");
 
                 //set input parameters
-                cs.setInt(1,employee.getEmployeeId());
+                cs.setInt(1,employeeId);
                 cs.setString(2,employee.getEmployeeName());
                 cs.setString(3,employee.getEmployeeAddress());
                 cs.setInt(4,employee.getEmployeeTel());

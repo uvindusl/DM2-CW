@@ -16,6 +16,7 @@ public class Employee {
     }
 
     public Employee(int id) {
+        this.employeeId = id;
     }
 
     public int getEmployeeId() {
