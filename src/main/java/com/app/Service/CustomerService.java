@@ -116,7 +116,7 @@ public class CustomerService {
                 CallableStatement cs = conn.prepareCall("{call update_customer(?,?,?,?)}");
 
                 //set input parameters
-                cs.setInt(1,customer.getCustomerId());
+                cs.setInt(1,customerId);
                 cs.setString(2, customer.getCustomerName());
                 cs.setString(3, customer.getCustomerAddress());
                 cs.setInt(4,customer.getCustomerTel());
