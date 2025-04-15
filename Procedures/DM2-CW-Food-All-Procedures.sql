@@ -6,12 +6,13 @@ CREATE OR REPLACE PROCEDURE add_food
     p_food_description IN VARCHAR2,
     p_food_pic IN BLOB,
     p_food_price IN NUMBER,
-    p_food_category IN VARCHAR2
+    p_food_category IN VARCHAR2,
+    p_food_supplier_id IN NUMBER
 )
 AS
 BEGIN
-    INSERT INTO food_table (food_name, food_description, food_pic, food_price, food_category)
-    VALUES (p_food_name, p_food_description, p_food_pic, p_food_price, p_food_category);
+    INSERT INTO food_table (food_name, food_description, food_pic, food_price, food_category, food_supplier_id)
+    VALUES (p_food_name, p_food_description, p_food_pic, p_food_price, p_food_category, p_food_supplier_id);
     COMMIT;
 END;
 
@@ -24,7 +25,8 @@ CREATE OR REPLACE PROCEDURE update_food
     p_food_description IN VARCHAR2,
     p_food_pic IN BLOB,
     p_food_price IN NUMBER,
-    p_food_category IN VARCHAR2
+    p_food_category IN VARCHAR2,
+    p_food_supplier_id IN NUMBER
 )
 AS
 BEGIN
@@ -34,7 +36,8 @@ BEGIN
         food_description = p_food_description,
         food_pic = p_food_pic,
         food_price = p_food_price,
-        food_category = p_food_category
+        food_category = p_food_category,
+        food_supplier_id = p_food_supplier_id
     WHERE food_id = p_food_id;
     COMMIT;
 END;
@@ -102,4 +105,16 @@ BEGIN
     SELECT * FROM food_table WHERE food_id = p_food_id;
 END;
 
-select * from food_table
+--8) FIND BY SUP ID
+
+CREATE OR REPLACE PROCEDURE get_food_by_supplier_id
+(
+    p_food_supplier_id IN NUMBER,
+    p_result OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_result FOR
+    SELECT * FROM food_table
+    WHERE food_supplier_id = p_food_supplier_id;
+END;
