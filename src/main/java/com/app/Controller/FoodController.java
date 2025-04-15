@@ -21,10 +21,11 @@ public class FoodController {
             @RequestParam("description") String description,
             @RequestParam("file") MultipartFile file,
             @RequestParam("price") Double price,
-            @RequestParam("category") String category) throws IOException {
+            @RequestParam("category") String category,
+            @RequestParam("supplier_id") int supplier_id) throws IOException {
         try
         {
-            foodService.addFood(name, description, file, price, category);
+            foodService.addFood(name, description, file, price, category, supplier_id);
             return "Food added successfully";
         }
         catch (Exception e)
@@ -41,10 +42,11 @@ public class FoodController {
             @RequestParam("description") String description,
             @RequestParam("file") MultipartFile file,
             @RequestParam("price") Double price,
-            @RequestParam("category") String category) throws IOException {
+            @RequestParam("category") String category,
+            @RequestParam("supplier_id") int supplier_id) throws IOException {
         try
         {
-            foodService.updateFood(id, name, description, file, price, category);
+            foodService.updateFood(id, name, description, file, price, category, supplier_id);
             return "Food updated successfully";
         }
         catch (Exception e)
@@ -91,4 +93,11 @@ public class FoodController {
         return foodService.filterByPrice(min, max);
     }
     //http://localhost:8084/foods/filter?min=100&max=5000 (put anything u like)
+
+    @GetMapping("foods/supplier/{supplierId}")
+    public List<Food> getFoodsBySupplierId(@PathVariable int supplierId) {
+        return foodService.getFoodBySupplierId(supplierId);
+    }
+
+    //http://localhost:8084/foods/supplier/4 (put any id u like)
 }
