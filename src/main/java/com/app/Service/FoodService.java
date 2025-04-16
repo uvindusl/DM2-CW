@@ -17,45 +17,45 @@ public class FoodService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void addFood(String name, String description, MultipartFile file, Double price, String category, int supplierId)
+    public void addFood(String foodName, String foodDescription, MultipartFile foodPic, Double foodPrice, String foodCategory, int foodSupplierId)
             throws IOException {
         jdbcTemplate.execute((Connection conn) -> {
             CallableStatement cs = conn.prepareCall("{call add_food(?, ?, ?, ?, ?, ?)}");
-            cs.setString(1, name);
-            cs.setString(2, description);
+            cs.setString(1, foodName);
+            cs.setString(2, foodDescription);
             try
             {
-                cs.setBlob(3, file.getInputStream());
+                cs.setBlob(3, foodPic.getInputStream());
             }
             catch (IOException e)
             {
                 throw new RuntimeException(e);
             }
-            cs.setDouble(4, price);
-            cs.setString(5, category);
-            cs.setInt(6, supplierId);
+            cs.setDouble(4, foodPrice);
+            cs.setString(5, foodCategory);
+            cs.setInt(6, foodSupplierId);
             cs.execute();
             return null;
         });
     }
 
-    public void updateFood(int id, String name, String description, MultipartFile file, Double price, String category, int supplierId) throws IOException {
+    public void updateFood(int foodId, String foodName, String foodDescription, MultipartFile foodPic, Double foodPrice, String foodCategory, int foodSupplierId) throws IOException {
         jdbcTemplate.execute((Connection conn) -> {
             CallableStatement cs = conn.prepareCall("{call update_food(?, ?, ?, ?, ?, ?, ?)}");
-            cs.setInt(1, id);
-            cs.setString(2, name);
-            cs.setString(3, description);
+            cs.setInt(1, foodId);
+            cs.setString(2, foodName);
+            cs.setString(3, foodDescription);
             try
             {
-                cs.setBlob(4, file.getInputStream());
+                cs.setBlob(4, foodPic.getInputStream());
             }
             catch (IOException e)
             {
                 throw new RuntimeException(e);
             }
-            cs.setDouble(5, price);
-            cs.setString(6, category);
-            cs.setInt(7, supplierId);
+            cs.setDouble(5, foodPrice);
+            cs.setString(6, foodCategory);
+            cs.setInt(7, foodSupplierId);
             cs.execute();
             return null;
         });
