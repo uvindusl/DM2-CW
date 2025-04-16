@@ -2,19 +2,21 @@ package com.app.Entity;
 
 public class Food {
     private int foodId;
-    private String food_name;
-    private String food_description;
-    private byte[] food_pic;
-    private double food_price;
-    private String food_category;
+    private String foodName;
+    private String foodDescription;
+    private byte[] foodPic;
+    private double foodPrice;
+    private String foodCategory;
+    private int foodSupplierId;
 
-    public Food(int foodId, String food_name, String food_description, byte[] food_pic, double food_price, String food_category) {
+    public Food(int foodId, String foodName, String foodDescription, byte[] foodPic, double foodPrice, String foodCategory, int foodSupplierId) {
         this.foodId = foodId;
-        this.food_name = food_name;
-        this.food_description = food_description;
-        this.food_pic = food_pic;
-        this.food_price = food_price;
-        this.food_category = food_category;
+        this.foodName = foodName;
+        this.foodDescription = foodDescription;
+        this.foodPic = foodPic;
+        this.foodPrice = foodPrice;
+        this.foodCategory = foodCategory;
+        this.foodSupplierId = foodSupplierId;
     }
 
     public int getFoodId() {
@@ -26,44 +28,52 @@ public class Food {
     }
 
     public String getFoodName() {
-        return food_name;
+        return foodName;
     }
 
-    public void setFoodName(String food_name) {
-        this.food_name = food_name;
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
     }
 
-    public String getFood_description() {
-        return food_description;
+    public String getFoodDescription() {
+        return foodDescription;
     }
 
-    public void setFood_description(String food_description) {
-        this.food_description = food_description;
+    public void setFoodDescription(String foodDescription) {
+        this.foodDescription = foodDescription;
     }
 
-    public byte[] getFood_pic() {
-        return food_pic;
+    public byte[] getFoodPic() {
+        return foodPic;
     }
 
-    public void setFood_pic(byte[] food_pic) {
-        this.food_pic = food_pic;
+    public void setFoodPic(byte[] foodPic) {
+        this.foodPic = foodPic;
     }
 
-    public double getFood_price() {
-        return food_price;
+    public double getFoodPrice() {
+        return foodPrice;
     }
 
-    public void setFood_price(double food_price) {
-        this.food_price = food_price;
+    public void setFoodPrice(double foodPrice) {
+        this.foodPrice = foodPrice;
     }
 
-    public String getFood_category() {
-        return food_category;
+    public String getFoodCategory() {
+        return foodCategory;
     }
 
-    public void setFood_category(String food_category) {
-        this.food_category = food_category;
+    public void setFoodCategory(String foodCategory) {
+        this.foodCategory = foodCategory;
     }
 
+    public int getFoodSupId()
+    {
+        return foodSupplierId;
+    }
 
+    public void setFoodSupId(int foodSupplierId)
+    {
+        this.foodSupplierId = foodSupplierId;
+    }
 }
