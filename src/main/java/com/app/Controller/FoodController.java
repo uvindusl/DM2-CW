@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.io.IOException;
 
+@CrossOrigin(origins = "http://localhost:5173/")
 @RestController
 public class FoodController {
 
