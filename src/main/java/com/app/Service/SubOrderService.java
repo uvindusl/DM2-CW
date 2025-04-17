@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SubOrderService {
@@ -16,45 +19,51 @@ public class SubOrderService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public SubOder getBySubOrderId(int orderId){
+    public List<SubOder> getBySubOrderId(int orderId) {
         try {
             return jdbcTemplate.execute((Connection conn) -> {
-                CallableStatement cs = conn.prepareCall("{call SELECT_SUBORDER_BY_ORDER_ID(?,?,?,?)}");
+                CallableStatement cs = conn.prepareCall("{call SELECT_SUBORDER_BY_ORDER_ID(?,?)}");
 
-                //set input parameter
-                cs.setInt(1,orderId);
+                // Set input parameter
+                cs.setInt(1, orderId);
 
-                //register output parameter
-                cs.registerOutParameter(2, Types.NUMERIC);
-                cs.registerOutParameter(3, Types.NUMERIC);
-                cs.registerOutParameter(4, Types.NUMERIC);
+                // Register output parameter (REF_CURSOR)
+                cs.registerOutParameter(2, Types.REF_CURSOR);
 
-                //execute the stored procedure
+                // Execute the stored procedure
                 cs.execute();
 
-                //get the output parameter
-                int customerId = cs.getInt(2);
-                int foodId = cs.getInt(3);
-                int qty = cs.getInt(4);
+                // Get the output parameter (ResultSet from the cursor)
+                ResultSet rs = (ResultSet) cs.getObject(2);
 
-                //return the result
-                return  new SubOder(customerId,foodId,qty,orderId);
+                List<SubOder> subOderList = new ArrayList<>();
+                while (rs.next()) {
+                    subOderList.add(new SubOder(
+                            rs.getInt("SUBORDER_CUSTOMER_ID"),
+                            rs.getInt("SUBORDER_FOOD_ID"),
+                            rs.getInt("SUBORDER_QTY"),
+                            rs.getInt("SUBORDER_ORDER_ID"), // Retrieve order ID from ResultSet
+                            rs.getInt("SUBORDER_SUPPLIER_ID")
+                    ));
+                }
+                return subOderList;
             });
-        }catch (DataAccessException e){
-            throw new RuntimeException("Error excutng stored procedure", e);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error executing stored procedure", e);
         }
     }
 
     public SubOder addDataToSubOrder(SubOder subOder){
         try{
             return jdbcTemplate.execute((Connection conn) -> {
-                CallableStatement cs = conn.prepareCall("{call INSERT_DATA_TO_SUBORDER(?,?,?,?)}");
+                CallableStatement cs = conn.prepareCall("{call INSERT_DATA_TO_SUBORDER(?,?,?,?,?)}");
 
                 //set input parameter
                 cs.setInt(1, subOder.getCustomerId());
                 cs.setInt(2, subOder.getFoodId());
                 cs.setInt(3, subOder.getQty());
                 cs.setInt(4, subOder.getOrderId());
+                cs.setInt(5,subOder.getSupplierId());
 
                 //execute the stored procedure
                 cs.execute();

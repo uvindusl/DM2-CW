@@ -5,12 +5,14 @@ public class SubOder {
     private int foodId;
     private int qty;
     private int orderId;
+    private int supplierId;
 
-    public SubOder(int customerId, int foodId, int qty, int orderId) {
+    public SubOder(int customerId, int foodId, int qty, int orderId, int supplierId) {
         this.customerId = customerId;
         this.foodId = foodId;
         this.qty = qty;
         this.orderId = orderId;
+        this.supplierId = supplierId;
     }
 
     public int getCustomerId() {
@@ -43,5 +45,13 @@ public class SubOder {
 
     public void setOrderId(int orderId) {
         this.orderId = orderId;
+    }
+
+    public int getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
     }
 }
