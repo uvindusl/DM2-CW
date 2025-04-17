@@ -23,4 +23,9 @@ public class SubOrderController {
     public SubOder addDataToSubOrder(@RequestBody SubOder subOder){
         return  subOrderService.addDataToSubOrder(subOder);
     }
+
+    @GetMapping(path = "/suborders/supplier/{supplierId}")
+    public List<SubOder> getBySupplierId(@PathVariable Integer supplierId){
+        return subOrderService.getBySupplierId(supplierId);
+    }
 }

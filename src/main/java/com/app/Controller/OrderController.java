@@ -20,16 +20,20 @@ public class OrderController {
         return orderService.getOrders();
     }
 
+    @GetMapping(path = "/orders/{orderId}")
+    public Order getOrderByOrderId(@PathVariable int orderId){
+        return orderService.getOrderByOrderId(orderId);
+    }
 
     @PostMapping(path = "/orders")
     public Order createOrder(@RequestBody Order order){
         return orderService.createOrder(order);
     }
 
-    @PatchMapping(path = "/orders/{orderId}")
-    public ResponseEntity<Void> updateOrder(@PathVariable int orderId, @RequestBody Map<String, Object> map){
-        String status = (String) map.get("orderstatus");
-        orderService.updateStatus(orderId, status);
-        return ResponseEntity.noContent().build();
-    }
+//    @PatchMapping(path = "/orders/{orderId}")
+//    public ResponseEntity<Void> updateOrder(@PathVariable int orderId, @RequestBody Map<String, Object> map){
+//        String status = (String) map.get("orderstatus");
+//        orderService.updateStatus(orderId, status);
+//        return ResponseEntity.noContent().build();
+//    }
 }
