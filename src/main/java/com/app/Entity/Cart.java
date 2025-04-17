@@ -2,12 +2,14 @@ package com.app.Entity;
 
 
 public class Cart {
+    private int id;
     private int customerId;
     private int foodId;
     private int qty;
     private int subTotal;
 
-    public Cart(int customerId, int foodId, int qty, int subTotal) {
+    public Cart(int id , int customerId, int foodId, int qty, int subTotal) {
+        this.id = id;
         this.customerId = customerId;
         this.foodId = foodId;
         this.qty = qty;
@@ -46,5 +48,11 @@ public class Cart {
         this.subTotal = subTotal;
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 }

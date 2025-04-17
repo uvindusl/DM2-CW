@@ -5,6 +5,9 @@ import com.app.Service.SubOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin(origins = "http://localhost:5173/")
 @RestController
 public class SubOrderController {
 
@@ -12,7 +15,7 @@ public class SubOrderController {
     private SubOrderService subOrderService;
 
     @GetMapping(path = "/suborders/{orderId}")
-    public SubOder getBySubOrderId(@PathVariable Integer orderId){
+    public List<SubOder> getBySubOrderId(@PathVariable Integer orderId){
         return subOrderService.getBySubOrderId(orderId);
     }
 
