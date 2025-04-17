@@ -20,6 +20,10 @@ public class OrderController {
         return orderService.getOrders();
     }
 
+    @GetMapping(path = "/orders/{orderId}")
+    public Order getOrderByOrderId(@PathVariable int orderId){
+        return orderService.getOrderByOrderId(orderId);
+    }
 
     @PostMapping(path = "/orders")
     public Order createOrder(@RequestBody Order order){
