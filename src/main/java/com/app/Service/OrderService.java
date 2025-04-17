@@ -30,6 +30,7 @@ public class OrderService {
             List<Order> orderList = new ArrayList<>();
             while (rs.next()) {
                 orderList.add(new Order(
+                        rs.getInt("ORDER_ID"),
                         rs.getInt("order_total_price"),
                         rs.getInt("order_customer_id"),
                         rs.getString("order_status")
@@ -42,13 +43,18 @@ public class OrderService {
     public Order createOrder(Order order) {
         try {
             return jdbcTemplate.execute((Connection conn) -> {
-                CallableStatement cs = conn.prepareCall("{call INSERT_ORDER_DATA(?,?,?)}");
+                CallableStatement cs = conn.prepareCall("{call INSERT_ORDER_DATA(?,?,?,?)}");
 
+                cs.registerOutParameter(4, Types.INTEGER);
                 cs.setInt(1, order.getOrderTotalPrice());
                 cs.setInt(2, order.getOrderCustomerId());
                 cs.setString(3, order.getOrderstatus());
 
                 cs.execute();
+
+                int generatedId = cs.getInt(4);
+                order.setId(generatedId);
+
                 return order;
             });
         } catch (DataAccessException e) {
