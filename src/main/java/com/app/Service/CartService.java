@@ -42,7 +42,7 @@ public class CartService {
                 int subTotal = cs.getInt(5);
 
                 //return the result
-                return new Cart(customerId,foodId,qty,subTotal);
+                return new Cart(cartId , customerId,foodId,qty,subTotal);
 
             });
         }catch (DataAccessException e){
@@ -135,6 +135,7 @@ public class CartService {
                 List<Cart> cartList = new java.util.ArrayList<>();
                 while (rs.next()) {
                     cartList.add(new Cart(
+                            rs.getInt("CART_ID"),
                             rs.getInt("CART_CUSTOMER_ID"),
                             rs.getInt("CART_FOOD_ID"),
                             rs.getInt("CART_QUANTITY"),
