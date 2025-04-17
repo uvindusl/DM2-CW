@@ -39,6 +39,7 @@ public class SubOrderService {
                 List<SubOder> subOderList = new ArrayList<>();
                 while (rs.next()) {
                     subOderList.add(new SubOder(
+                            rs.getInt("SUBORDER_ID"),
                             rs.getInt("SUBORDER_CUSTOMER_ID"),
                             rs.getInt("SUBORDER_FOOD_ID"),
                             rs.getInt("SUBORDER_QTY"),

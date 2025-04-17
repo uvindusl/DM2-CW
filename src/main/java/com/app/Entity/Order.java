@@ -2,11 +2,13 @@ package com.app.Entity;
 
 public class Order {
 
+    private int id;
     private int orderTotalPrice;
     private int orderCustomerId;
     private String orderstatus;
 
-    public Order(int orderTotalPrice, int orderCustomerId, String orderstatus) {
+    public Order(int id, int orderTotalPrice, int orderCustomerId, String orderstatus) {
+        this.id = id;
         this.orderTotalPrice = orderTotalPrice;
         this.orderCustomerId = orderCustomerId;
         this.orderstatus = orderstatus;
@@ -34,5 +36,13 @@ public class Order {
 
     public void setOrderstatus(String orderstatus) {
         this.orderstatus = orderstatus;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
