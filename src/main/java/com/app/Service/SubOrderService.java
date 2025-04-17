@@ -44,7 +44,8 @@ public class SubOrderService {
                             rs.getInt("SUBORDER_FOOD_ID"),
                             rs.getInt("SUBORDER_QTY"),
                             rs.getInt("SUBORDER_ORDER_ID"), // Retrieve order ID from ResultSet
-                            rs.getInt("SUBORDER_SUPPLIER_ID")
+                            rs.getInt("SUBORDER_SUPPLIER_ID"),
+                            rs.getString("SUBORDER_STATUS")
                     ));
                 }
                 return subOderList;
@@ -57,7 +58,7 @@ public class SubOrderService {
     public SubOder addDataToSubOrder(SubOder subOder){
         try{
             return jdbcTemplate.execute((Connection conn) -> {
-                CallableStatement cs = conn.prepareCall("{call INSERT_DATA_TO_SUBORDER(?,?,?,?,?)}");
+                CallableStatement cs = conn.prepareCall("{call INSERT_DATA_TO_SUBORDER(?,?,?,?,?,?)}");
 
                 //set input parameter
                 cs.setInt(1, subOder.getCustomerId());
@@ -65,6 +66,7 @@ public class SubOrderService {
                 cs.setInt(3, subOder.getQty());
                 cs.setInt(4, subOder.getOrderId());
                 cs.setInt(5,subOder.getSupplierId());
+                cs.setString(6, subOder.getStatus());
 
                 //execute the stored procedure
                 cs.execute();
