@@ -8,10 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
+import java.util.List;
 
 @Service
 public class CartService {
@@ -114,6 +112,39 @@ public class CartService {
             });
         }catch (DataAccessException e){
             throw new RuntimeException("Error excuting stored procedure", e);
+        }
+    }
+
+    public List<Cart> getByCustomerId(int customerId){
+        try{
+            return jdbcTemplate.execute((Connection conn)-> {
+                CallableStatement cs = conn.prepareCall("{call SELECT_CART_BY_CUSTOMER_ID(?,?)}");
+
+                //set input parameter
+                cs.setInt(1, customerId);
+
+                //register output parameter
+                cs.registerOutParameter(2, Types.REF_CURSOR);
+
+                //execute the stored procedure
+                cs.execute();
+
+                //get the output parameter (ResultSet from the cursor)
+                ResultSet rs = (ResultSet) cs.getObject(2);
+
+                List<Cart> cartList = new java.util.ArrayList<>();
+                while (rs.next()) {
+                    cartList.add(new Cart(
+                            rs.getInt("CART_CUSTOMER_ID"),
+                            rs.getInt("CART_FOOD_ID"),
+                            rs.getInt("CART_QUANTITY"),
+                            rs.getInt("CART_SUB_TOTAL")
+                    ));
+                }
+                return cartList;
+            });
+        }catch (DataAccessException e){
+            throw new RuntimeException("Error executing stored procedure", e);
         }
     }
 }
