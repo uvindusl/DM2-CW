@@ -39,6 +39,26 @@ public class OrderService {
         });
     }
 
+    public List<Order> getOrdersByCustomerId(int customerId) {
+        return jdbcTemplate.execute((Connection conn) -> {
+            CallableStatement cs = conn.prepareCall("{call GET_ORDERS_BY_CUSTOMER_ID(?,?)}");
+            cs.setInt(1, customerId);
+            cs.registerOutParameter(2, Types.REF_CURSOR);
+            cs.execute();
+            ResultSet rs = (ResultSet) cs.getObject(2);
+
+            List<Order> orderList = new ArrayList<>();
+            while (rs.next()) {
+                orderList.add(new Order(
+                        rs.getInt("ORDER_ID"),
+                        rs.getInt("order_total_price"),
+                        rs.getInt("order_customer_id")
+                ));
+            }
+            return orderList;
+        });
+    }
+
 public Order getOrderByOrderId(int orderId) {
         return jdbcTemplate.execute((Connection conn) -> {
             CallableStatement cs = conn.prepareCall("{call GET_ORDER_BY_ID(?,?,?)}");
@@ -55,30 +75,30 @@ public Order getOrderByOrderId(int orderId) {
     }
 
     public Order createOrder(Order order) {
-                    try {
-                        return jdbcTemplate.execute((Connection conn) -> {
-                            CallableStatement cs = conn.prepareCall("{call INSERT_ORDER_DATA(?,?,?)}");
+        try {
+            return jdbcTemplate.execute((Connection conn) -> {
+                CallableStatement cs = conn.prepareCall("{call INSERT_ORDER_DATA(?,?,?)}");
 
-                            // Register output parameter
-                            cs.registerOutParameter(3, Types.INTEGER);
+                // Register output parameter
+                cs.registerOutParameter(3, Types.INTEGER);
 
-                            // Set input parameters
-                            cs.setInt(1, order.getOrderTotalPrice());
-                            cs.setInt(2, order.getOrderCustomerId());
+                // Set input parameters
+                cs.setInt(1, order.getOrderTotalPrice());
+                cs.setInt(2, order.getOrderCustomerId());
 
-                            // Execute the stored procedure
-                            cs.execute();
+                // Execute the stored procedure
+                cs.execute();
 
-                            // Retrieve the generated ID
-                            int generatedId = cs.getInt(3); // Corrected to match the output parameter index
-                            order.setId(generatedId);
+                // Retrieve the generated ID
+                int generatedId = cs.getInt(3); // Corrected to match the output parameter index
+                order.setId(generatedId);
 
-                            return order;
-                        });
-                    } catch (DataAccessException e) {
-                        throw new RuntimeException("Error executing procedure", e);
-                    }
-                }
+                return order;
+            });
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error executing procedure", e);
+        }
+    }
 
 //    public void updateStatus(int orderId, String status) {
 //        try {
