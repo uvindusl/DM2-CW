@@ -111,4 +111,23 @@ public class SubOrderService {
             throw new RuntimeException("Error excuting stored procedure", e);
         }
     }
+
+    public void updateStatus(int suborderId, String status) {
+        try {
+            jdbcTemplate.execute((Connection conn) -> {
+                CallableStatement cs = conn.prepareCall("{call UPDATE_SUBORDER_DATA(?,?)}");
+
+                cs.setInt(1, suborderId);
+                cs.setString(2, status);
+
+                cs.execute();
+                return null;
+
+            });
+
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error executing stored procedure", e);
+
+        }
+    }
 }
