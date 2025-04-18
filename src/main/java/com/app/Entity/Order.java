@@ -5,13 +5,12 @@ public class Order {
     private int id;
     private int orderTotalPrice;
     private int orderCustomerId;
-    private String orderstatus;
 
-    public Order(int id, int orderTotalPrice, int orderCustomerId, String orderstatus) {
+
+    public Order(int id, int orderTotalPrice, int orderCustomerId) {
         this.id = id;
         this.orderTotalPrice = orderTotalPrice;
         this.orderCustomerId = orderCustomerId;
-        this.orderstatus = orderstatus;
     }
 
     public int getOrderTotalPrice() {
@@ -30,13 +29,6 @@ public class Order {
         this.orderCustomerId = orderCustomerId;
     }
 
-    public String getOrderstatus() {
-        return orderstatus;
-    }
-
-    public void setOrderstatus(String orderstatus) {
-        this.orderstatus = orderstatus;
-    }
 
     public int getId() {
         return id;
