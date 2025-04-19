@@ -2,29 +2,19 @@ package com.app.Entity;
 
 public class SubOder {
     private int id;
-    private int customerId;
     private int foodId;
     private int qty;
     private int orderId;
     private int supplierId;
     private String status;
 
-    public SubOder(int id, int customerId, int foodId, int qty, int orderId, int supplierId , String status) {
+    public SubOder(int id, int foodId, int qty, int orderId, int supplierId , String status) {
         this.id = id;
-        this.customerId = customerId;
         this.foodId = foodId;
         this.qty = qty;
         this.orderId = orderId;
         this.supplierId = supplierId;
         this.status = status;
-    }
-
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
     }
 
     public int getFoodId() {

@@ -40,10 +40,9 @@ public class SubOrderService {
                 while (rs.next()) {
                     subOderList.add(new SubOder(
                             rs.getInt("SUBORDER_ID"),
-                            rs.getInt("SUBORDER_CUSTOMER_ID"),
                             rs.getInt("SUBORDER_FOOD_ID"),
                             rs.getInt("SUBORDER_QTY"),
-                            rs.getInt("SUBORDER_ORDER_ID"), // Retrieve order ID from ResultSet
+                            rs.getInt("SUBORDER_ORDER_ID"),
                             rs.getInt("SUBORDER_SUPPLIER_ID"),
                             rs.getString("SUBORDER_STATUS")
                     ));
@@ -76,7 +75,6 @@ public class SubOrderService {
                 while (rs.next()) {
                     subOderList.add(new SubOder(
                             rs.getInt("SUBORDER_ID"),
-                            rs.getInt("SUBORDER_CUSTOMER_ID"),
                             rs.getInt("SUBORDER_FOOD_ID"),
                             rs.getInt("SUBORDER_QTY"),
                             rs.getInt("SUBORDER_ORDER_ID"), // Retrieve order ID from ResultSet
@@ -97,12 +95,11 @@ public class SubOrderService {
                 CallableStatement cs = conn.prepareCall("{call INSERT_DATA_TO_SUBORDER(?,?,?,?,?,?)}");
 
                 //set input parameter
-                cs.setInt(1, subOder.getCustomerId());
-                cs.setInt(2, subOder.getFoodId());
-                cs.setInt(3, subOder.getQty());
-                cs.setInt(4, subOder.getOrderId());
-                cs.setInt(5,subOder.getSupplierId());
-                cs.setString(6, subOder.getStatus());
+                cs.setInt(1, subOder.getFoodId());
+                cs.setInt(2, subOder.getQty());
+                cs.setInt(3, subOder.getOrderId());
+                cs.setInt(4,subOder.getSupplierId());
+                cs.setString(5, subOder.getStatus());
 
                 //execute the stored procedure
                 cs.execute();
@@ -112,6 +109,25 @@ public class SubOrderService {
             });
         }catch (DataAccessException e){
             throw new RuntimeException("Error excuting stored procedure", e);
+        }
+    }
+
+    public void updateStatus(int suborderId, String status) {
+        try {
+            jdbcTemplate.execute((Connection conn) -> {
+                CallableStatement cs = conn.prepareCall("{call UPDATE_SUBORDER_DATA(?,?)}");
+
+                cs.setInt(1, suborderId);
+                cs.setString(2, status);
+
+                cs.execute();
+                return null;
+
+            });
+
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error executing stored procedure", e);
+
         }
     }
 }
