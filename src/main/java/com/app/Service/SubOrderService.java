@@ -134,13 +134,10 @@ public class SubOrderService {
     }
 
 
-    public List<SubOder> mostSoldProducts() {
+    public List<MostSoldProduct> mostSoldProducts() {
         try {
             return jdbcTemplate.execute((Connection conn) -> {
                 CallableStatement cs = conn.prepareCall("{call get_most_sold_product(?)}");
-
-                // Set input parameter
-
 
                 // Register output parameter (REF_CURSOR)
                 cs.registerOutParameter(1, Types.REF_CURSOR);
@@ -151,21 +148,41 @@ public class SubOrderService {
                 // Get the output parameter (ResultSet from the cursor)
                 ResultSet rs = (ResultSet) cs.getObject(1);
 
-                List<SubOder> subOderList = new ArrayList<>();
+                List<MostSoldProduct> mostSoldList = new ArrayList<>();
                 while (rs.next()) {
-                    subOderList.add(new SubOder(
-                            rs.getInt("SUBORDER_ID"),
-                            rs.getInt("SUBORDER_FOOD_ID"),
-                            rs.getInt("SUBORDER_QTY"),
-                            rs.getInt("SUBORDER_ORDER_ID"),
-                            rs.getInt("SUBORDER_SUPPLIER_ID"),
-                            rs.getString("SUBORDER_STATUS")
-                    ));
+                    MostSoldProduct mostSoldProduct = new MostSoldProduct();
+                    mostSoldProduct.setFoodId(rs.getInt("SUBORDER_FOOD_ID"));
+                    mostSoldProduct.setTotalSold(rs.getInt("total_sold"));
+                    mostSoldList.add(mostSoldProduct);
                 }
-                return subOderList;
+                return mostSoldList;
             });
         } catch (DataAccessException e) {
             throw new RuntimeException("Error executing stored procedure", e);
+        }
+    }
+
+    public static class MostSoldProduct {
+        private int foodId;
+        private int totalSold;
+
+        public MostSoldProduct() {
+        }
+
+        public int getFoodId() {
+            return foodId;
+        }
+
+        public void setFoodId(int foodId) {
+            this.foodId = foodId;
+        }
+
+        public int getTotalSold() {
+            return totalSold;
+        }
+
+        public void setTotalSold(int totalSold) {
+            this.totalSold = totalSold;
         }
     }
 }

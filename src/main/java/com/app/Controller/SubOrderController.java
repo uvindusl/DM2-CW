@@ -38,8 +38,8 @@ public class SubOrderController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(path = "/suborder/getMostSold")
-    public List<SubOder> mostSoldProducts(){
+    @GetMapping(path = "/suborders/mostSold")
+    public List mostSoldProducts(){
         return subOrderService.mostSoldProducts();
     }
 }

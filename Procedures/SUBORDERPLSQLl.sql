@@ -51,7 +51,7 @@ WHERE ROWNUM <= 2;
 END;
 
 
-create or replace NONEDITIONABLE PROCEDURE get_sold_qty(food_id IN NUMBER, sold_qty OUT NUMBER)
+create or replace PROCEDURE get_sold_qty(food_id IN NUMBER, sold_qty OUT NUMBER)
 AS
 BEGIN
     SELECT SUM(SUBORDER_QTY) INTO sold_qty FROM suborder_table WHERE SUBORDER_FOOD_ID = food_id;
