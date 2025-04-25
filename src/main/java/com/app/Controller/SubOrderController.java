@@ -37,4 +37,9 @@ public class SubOrderController {
         subOrderService.updateStatus(suborderId, status);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping(path = "/suborder/getMostSold")
+    public List<SubOder> mostSoldProducts(){
+        return subOrderService.mostSoldProducts();
+    }
 }
