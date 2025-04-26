@@ -57,8 +57,8 @@ BEGIN
     SET SUPPLIER_NAME = NAME, SUPPLIER_ADDRESS = ADDRESS, SUPPLIER_TEL = TELL, SUPPLIER_COMPANY = COMPANY, SUPPLIER_PASSWORD = PASSWORD
     WHERE SUPPLIER_ID = ID;
     EXCEPTION 
-   WHEN too_many_rows THEN 
-      dbms_output.put_line('expected only one row!'); 
+   WHEN no_data_found THEN 
+      dbms_output.put_line('No such supplier!'); 
     
 END UPDATE_SUPPLIER;
 
