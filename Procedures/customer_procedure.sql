@@ -22,7 +22,7 @@ BEGIN
         CUSTOMER_ID = p_customer_id;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        dbms_output.put_line('Customer do not exist');
+        dbms_output.put_line('Customer does not exists');
 END get_customer_details;       
 
 ------select all--------------------------------------------------
@@ -73,7 +73,7 @@ BEGIN
     customer_id = p_customer_id;   
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        dbms_output.put_line('Customer do not exist');
+        dbms_output.put_line('Customer does not exists');
 END;
 --------delete----------------------------------------------------------------
 CREATE OR REPLACE PROCEDURE delete_customer(p_customer_id IN NUMBER)
@@ -83,7 +83,7 @@ BEGIN
     WHERE customer_id = p_customer_id;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        dbms_output.put_line('Customer do not exist');
+        dbms_output.put_line('Customer does not exists');
 END delete_customer;
 
 ---------login---------------------------------------------------------------
@@ -101,7 +101,7 @@ BEGIN
     
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        dbms_output.put_line('Customer do not exist');
+        dbms_output.put_line('Customer does not exists');
 END;
 
     
