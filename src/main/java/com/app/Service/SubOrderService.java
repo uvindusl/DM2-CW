@@ -162,6 +162,33 @@ public class SubOrderService {
         }
     }
 
+    public int getSoldQuantity(int productId) {
+        try {
+            return jdbcTemplate.execute((Connection conn) -> {
+                CallableStatement cs = conn.prepareCall("{call get_sold_qty(?,?)}");
+
+                // Set input parameter
+                cs.setInt(1, productId);
+
+
+                cs.registerOutParameter(2, Types.NUMERIC);
+
+                // Execute the stored procedure
+                cs.execute();
+
+
+                int qty =  cs.getInt(2);
+
+
+
+                return qty;
+            });
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error executing stored procedure", e);
+        }
+
+    }
+
     public static class MostSoldProduct {
         private int foodId;
         private int totalSold;

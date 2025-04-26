@@ -42,4 +42,9 @@ public class SubOrderController {
     public List mostSoldProducts(){
         return subOrderService.mostSoldProducts();
     }
+
+    @GetMapping(path = "/suborders/soldqty/{productId}")
+    public int getSoldQuantity(@PathVariable int productId){
+        return subOrderService.getSoldQuantity(productId);
+    }
 }
