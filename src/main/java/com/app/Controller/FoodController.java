@@ -36,7 +36,7 @@ public class FoodController {
     }
     //http://localhost:8080/urban-food/foods (use body, form in postman to test)
 
-    @PutMapping("/foods/{id}")
+    @PutMapping("/foods/{foodId}")
     public String updateFood(
             @PathVariable("foodId") int foodId,
             @RequestParam("foodName") String foodName,
