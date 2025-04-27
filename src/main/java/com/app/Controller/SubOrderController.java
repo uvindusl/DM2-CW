@@ -37,4 +37,14 @@ public class SubOrderController {
         subOrderService.updateStatus(suborderId, status);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping(path = "/suborders/mostSold")
+    public List mostSoldProducts(){
+        return subOrderService.mostSoldProducts();
+    }
+
+    @GetMapping(path = "/suborders/soldqty/{productId}")
+    public int getSoldQuantity(@PathVariable int productId){
+        return subOrderService.getSoldQuantity(productId);
+    }
 }
