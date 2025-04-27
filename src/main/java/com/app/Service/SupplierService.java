@@ -51,8 +51,7 @@ public class SupplierService {
     public Supplier registerSupplier(Supplier supplier) {
         try {
             return jdbcTemplate.execute((Connection conn) -> {
-                CallableStatement cs = conn.prepareCall("{call REGISTER_SUPPLIER(?,?,?,?,?)}");
-
+                CallableStatement cs = conn.prepareCall("{call create_supplier(?,?,?,?,?,?)}");
 
                 cs.setString(1, supplier.getName());
                 cs.setString(2, supplier.getAddress());
@@ -60,7 +59,15 @@ public class SupplierService {
                 cs.setString(4, supplier.getCompany());
                 cs.setString(5, supplier.getPassword());
 
+                // Register the output parameter for the generated supplier_id
+                cs.registerOutParameter(6, Types.NUMERIC);
+
                 cs.execute();
+
+                // Retrieve the generated supplier_id
+                int generatedId = cs.getInt(6);
+                supplier.setId(generatedId);
+
                 return supplier;
             });
         } catch (DataAccessException e) {

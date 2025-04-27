@@ -39,7 +39,8 @@ END;
 CREATE OR REPLACE PROCEDURE create_customer(
     p_customer_name IN VARCHAR2,
     p_customer_address IN VARCHAR2,
-    p_customer_tel IN NUMBER
+    p_customer_tel IN NUMBER,
+    p_customer_id OUT NUMBER
     )
 IS
 BEGIN
@@ -52,7 +53,8 @@ BEGIN
         p_customer_name,
         p_customer_address,
         p_customer_tel
-        );
+        )
+    RETURNING customer_id INTO p_customer_id;
 END create_customer;
 
 --------update------------------------------------------------------

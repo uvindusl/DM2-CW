@@ -13,13 +13,32 @@ EXCEPTION
 END;
 
 --Register supplier--
-CREATE OR REPLACE PROCEDURE REGISTER_SUPPLIER(SNAME IN VARCHAR2, ADDRESS IN VARCHAR2, TELL IN NUMBER, COMPANY IN VARCHAR2, PASSWORD IN VARCHAR2)
+CREATE OR REPLACE PROCEDURE create_supplier(
+    p_supplier_name IN VARCHAR2,
+    p_supplier_address IN VARCHAR2,
+    p_supplier_tel IN NUMBER,
+    p_supplier_company IN VARCHAR2,
+    p_supplier_password IN VARCHAR2,
+    p_supplier_id OUT NUMBER
+    )
 IS
 BEGIN
-    INSERT
-    INTO SUPPLIER_TABLE(SUPPLIER_NAME, SUPPLIER_ADDRESS, SUPPLIER_TEL, SUPPLIER_COMPANY, SUPPLIER_PASSWORD)
-    VALUES (SNAME, ADDRESS, TELL, COMPANY, PASSWORD);
-END REGISTER_SUPPLIER;
+    INSERT INTO supplier_table (
+        supplier_NAME,
+        supplier_ADDRESS,
+        supplier_TEL,
+        supplier_COMPANY,
+        supplier_PASSWORD
+        )
+    VALUES (
+        p_supplier_name,
+        p_supplier_address,
+        p_supplier_tel,
+        p_supplier_company,
+        p_supplier_password
+        )
+    RETURNING supplier_id INTO p_supplier_id;
+END create_supplier;
 
 
 
