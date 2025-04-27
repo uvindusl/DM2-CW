@@ -23,6 +23,9 @@ BEGIN
         EMPLOYEE_TABLE
     WHERE
         EMPLOYEE_ID = p_employee_id;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        dbms_output.put_line('Employee does not exists');
 END get_employee_details;   
 
 -------select all-----------------------------------------------
@@ -31,6 +34,9 @@ AS
 BEGIN
     OPEN  p_employees FOR
     SELECT * FROM EMPLOYEE_TABLE;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        dbms_output.put_line('Employees not found');
 END;
 ------------insert----------------------------------------------
 CREATE OR REPLACE PROCEDURE create_employee(
@@ -72,6 +78,9 @@ BEGIN
     employee_password = P_employee_password
     WHERE
     employee_id = p_employee_id;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        dbms_output.put_line('Employee does not exists');
 END update_employee;
 
 --------------delete-----------------------------------------
@@ -80,6 +89,9 @@ IS
 BEGIN
     DELETE FROM employee_table
     WHERE employee_id = p_employee_id;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        dbms_output.put_line('Employee does not exists');
 END delete_employee;
 
 -------------login----------------------------------------
@@ -94,6 +106,9 @@ CREATE OR REPLACE PROCEDURE login_employee(
         INTO ID
         FROM employee_table
         WHERE employee_name = NAME AND employee_password = PASSWORD;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        dbms_output.put_line('Employee does not exists');
    END;     
 
         
