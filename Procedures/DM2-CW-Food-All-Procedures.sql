@@ -1,5 +1,4 @@
---1) ADD
-
+-- 1) ADD
 CREATE OR REPLACE PROCEDURE add_food
 (
     p_food_name IN VARCHAR2,
@@ -16,13 +15,10 @@ BEGIN
     COMMIT;
 EXCEPTION
     WHEN OTHERS THEN
-        ROLLBACK;
-        RAISE_APPLICATION_ERROR(-20001, 'Error adding food: ' || SQLERRM);
+        dbms_output.put_line('Error adding food: ' || SQLERRM);
 END;
 
-
---2) UPDATE
-
+-- 2) UPDATE
 CREATE OR REPLACE PROCEDURE update_food
 (
     p_food_id IN NUMBER,
@@ -44,18 +40,13 @@ BEGIN
         food_category = p_food_category,
         food_supplier_id = p_food_supplier_id
     WHERE food_id = p_food_id;
-    
-    IF SQL%ROWCOUNT = 0 THEN
-        RAISE NO_DATA_FOUND;
-    END IF;
+
 EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        dbms_output.put_line('Food not found');
-END update_food;
+    WHEN OTHERS THEN
+        dbms_output.put_line('Error updating food: ' || SQLERRM);
+END;
 
-
---3) DELETE
-
+-- 3) DELETE
 CREATE OR REPLACE PROCEDURE delete_food
 (
     p_food_id IN NUMBER
@@ -63,18 +54,13 @@ CREATE OR REPLACE PROCEDURE delete_food
 AS
 BEGIN
     DELETE FROM food_table WHERE food_id = p_food_id;
-    
-    IF SQL%ROWCOUNT = 0 THEN
-        RAISE NO_DATA_FOUND;
-    END IF;
+
 EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        dbms_output.put_line('Food not found');
-END delete_food;
+    WHEN OTHERS THEN
+        dbms_output.put_line('Error deleting food: ' || SQLERRM);
+END;
 
-
---4) ALL FOODS
-
+-- 4) GET ALL FOODS
 CREATE OR REPLACE PROCEDURE get_all_foods
 (
     p_result OUT SYS_REFCURSOR
@@ -85,29 +71,26 @@ BEGIN
     SELECT * FROM food_table;
 EXCEPTION
     WHEN OTHERS THEN
-        dbms_output.put_line('Error fetching foods');
-END get_all_foods;
+        dbms_output.put_line('Error fetching foods: ' || SQLERRM);
+END;
 
-
---5) SEARCH - NAME
-
+-- 5) SEARCH BY NAME
 CREATE OR REPLACE PROCEDURE search_by_name
 (
-    p_name VARCHAR2,
+    p_name IN VARCHAR2,
     p_result OUT SYS_REFCURSOR
 )
 AS
 BEGIN
     OPEN p_result FOR 
-    SELECT * FROM food_table WHERE LOWER(food_name) LIKE '%' || LOWER(p_name) || '%';
+    SELECT * FROM food_table 
+    WHERE LOWER(food_name) LIKE '%' || LOWER(p_name) || '%';
 EXCEPTION
     WHEN OTHERS THEN
-        dbms_output.put_line('Error searching food by name');
-END search_by_name;
+        dbms_output.put_line('Error searching food by name: ' || SQLERRM);
+END;
 
-
---6) SEARCH - PRICE
-
+-- 6) SEARCH BY PRICE RANGE
 CREATE OR REPLACE PROCEDURE search_by_price
 (
     p_min_price IN NUMBER,
@@ -117,15 +100,14 @@ CREATE OR REPLACE PROCEDURE search_by_price
 AS
 BEGIN
     OPEN p_result FOR
-    SELECT * FROM food_table WHERE food_price BETWEEN p_min_price AND p_max_price;
+    SELECT * FROM food_table 
+    WHERE food_price BETWEEN p_min_price AND p_max_price;
 EXCEPTION
     WHEN OTHERS THEN
-        dbms_output.put_line('Error searching food by price');
-END search_by_price;
-
+        dbms_output.put_line('Error searching food by price: ' || SQLERRM);
+END;
     
---7) FIND BY ID
-
+-- 7) SEARCH BY ID
 CREATE OR REPLACE PROCEDURE search_by_id
 (
     p_food_id IN NUMBER,
@@ -134,15 +116,14 @@ CREATE OR REPLACE PROCEDURE search_by_id
 AS
 BEGIN
     OPEN p_result FOR
-    SELECT * FROM food_table WHERE food_id = p_food_id;
+    SELECT * FROM food_table 
+    WHERE food_id = p_food_id;
 EXCEPTION
     WHEN OTHERS THEN
-        dbms_output.put_line('Error searching food by ID');
-END search_by_id;
+        dbms_output.put_line('Error searching food by ID: ' || SQLERRM);
+END;
 
-
---8) FIND BY SUP ID
-
+-- 8) SEARCH BY SUPPLIER ID
 CREATE OR REPLACE PROCEDURE get_food_by_supplier_id
 (
     p_food_supplier_id IN NUMBER,
@@ -151,9 +132,9 @@ CREATE OR REPLACE PROCEDURE get_food_by_supplier_id
 AS
 BEGIN
     OPEN p_result FOR
-    SELECT * FROM food_table
+    SELECT * FROM food_table 
     WHERE food_supplier_id = p_food_supplier_id;
 EXCEPTION
     WHEN OTHERS THEN
-        dbms_output.put_line('Error fetching food by supplier ID');
-END get_food_by_supplier_id;
+        dbms_output.put_line('Error fetching food by supplier ID: ' || SQLERRM);
+END;
