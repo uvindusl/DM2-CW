@@ -47,7 +47,7 @@ FROM (
     GROUP BY SUBORDER_FOOD_ID
     ORDER BY total_sold DESC
 )
-WHERE ROWNUM <= 2;
+WHERE ROWNUM <= 3;
 END;
 
 
