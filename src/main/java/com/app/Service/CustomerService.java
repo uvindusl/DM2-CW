@@ -84,28 +84,32 @@ public class CustomerService {
         }
     }
 
-    public Customer createCustomer(Customer customer){
+    public Customer createCustomer(Customer customer) {
 
         try {
             //calling the pl/sql stored procedure
-            return jdbcTemplate.execute((Connection conn)-> {
-                CallableStatement cs = conn.prepareCall("{call create_customer(?,?,?)}");
+            return jdbcTemplate.execute((Connection conn) -> {
+                CallableStatement cs = conn.prepareCall("{call create_customer(?,?,?,?)}");
 
                 //set input parameters
                 cs.setString(1, customer.getCustomerName());
                 cs.setString(2, customer.getCustomerAddress());
-                cs.setInt(3,customer.getCustomerTel());
+                cs.setInt(3, customer.getCustomerTel());
+
+                //register output parameter
+                cs.registerOutParameter(4, Types.INTEGER);
 
                 //Execute the stored procedure
                 cs.execute();
 
-                //return the result
-                return customer;
-            });
-        }
-        catch (DataAccessException e){
-            throw new RuntimeException("Error executing stored procedure",e);
+                //get the output parameter
+                int customerId = cs.getInt(4);
 
+                //return the result
+                return new Customer(customerId, customer.getCustomerName(), customer.getCustomerAddress(), customer.getCustomerTel());
+            });
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error executing stored procedure", e);
         }
     }
 
