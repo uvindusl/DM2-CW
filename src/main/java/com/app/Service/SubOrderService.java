@@ -94,7 +94,7 @@ public class SubOrderService {
     public SubOder addDataToSubOrder(SubOder subOder){
         try{
             return jdbcTemplate.execute((Connection conn) -> {
-                CallableStatement cs = conn.prepareCall("{call INSERT_DATA_TO_SUBORDER(?,?,?,?,?,?)}");
+                CallableStatement cs = conn.prepareCall("{call INSERT_DATA_TO_SUBORDER(?,?,?,?,?)}");
 
                 //set input parameter
                 cs.setInt(1, subOder.getFoodId());
