@@ -3,6 +3,7 @@ package com.app.Service;
 import com.app.Entity.SubOder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SubOrderService {
@@ -128,6 +130,86 @@ public class SubOrderService {
         } catch (DataAccessException e) {
             throw new RuntimeException("Error executing stored procedure", e);
 
+        }
+    }
+
+
+    public List<MostSoldProduct> mostSoldProducts() {
+        try {
+            return jdbcTemplate.execute((Connection conn) -> {
+                CallableStatement cs = conn.prepareCall("{call get_most_sold_product(?)}");
+
+                // Register output parameter (REF_CURSOR)
+                cs.registerOutParameter(1, Types.REF_CURSOR);
+
+                // Execute the stored procedure
+                cs.execute();
+
+                // Get the output parameter (ResultSet from the cursor)
+                ResultSet rs = (ResultSet) cs.getObject(1);
+
+                List<MostSoldProduct> mostSoldList = new ArrayList<>();
+                while (rs.next()) {
+                    MostSoldProduct mostSoldProduct = new MostSoldProduct();
+                    mostSoldProduct.setFoodId(rs.getInt("SUBORDER_FOOD_ID"));
+                    mostSoldProduct.setTotalSold(rs.getInt("total_sold"));
+                    mostSoldList.add(mostSoldProduct);
+                }
+                return mostSoldList;
+            });
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error executing stored procedure", e);
+        }
+    }
+
+    public int getSoldQuantity(int productId) {
+        try {
+            return jdbcTemplate.execute((Connection conn) -> {
+                CallableStatement cs = conn.prepareCall("{call get_sold_qty(?,?)}");
+
+                // Set input parameter
+                cs.setInt(1, productId);
+
+
+                cs.registerOutParameter(2, Types.NUMERIC);
+
+                // Execute the stored procedure
+                cs.execute();
+
+
+                int qty =  cs.getInt(2);
+
+
+
+                return qty;
+            });
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error executing stored procedure", e);
+        }
+
+    }
+
+    public static class MostSoldProduct {
+        private int foodId;
+        private int totalSold;
+
+        public MostSoldProduct() {
+        }
+
+        public int getFoodId() {
+            return foodId;
+        }
+
+        public void setFoodId(int foodId) {
+            this.foodId = foodId;
+        }
+
+        public int getTotalSold() {
+            return totalSold;
+        }
+
+        public void setTotalSold(int totalSold) {
+            this.totalSold = totalSold;
         }
     }
 }

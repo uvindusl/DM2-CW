@@ -35,3 +35,26 @@ BEGIN
     SET SUBORDER_STATUS = STATUS
     WHERE SUBORDER_ID = ID;
 END UPDATE_SUBORDER_DATA;
+
+create or replace PROCEDURE get_most_sold_product(p_most_sold OUT SYS_REFCURSOR)
+AS
+BEGIN
+    OPEN p_most_sold FOR
+    SELECT SUBORDER_FOOD_ID, total_sold
+FROM (
+    SELECT SUBORDER_FOOD_ID, SUM(SUBORDER_QTY) AS total_sold
+    FROM SUBORDER_TABLE
+    GROUP BY SUBORDER_FOOD_ID
+    ORDER BY total_sold DESC
+)
+WHERE ROWNUM <= 3;
+END;
+
+
+create or replace PROCEDURE get_sold_qty(food_id IN NUMBER, sold_qty OUT NUMBER)
+AS
+BEGIN
+    SELECT SUM(SUBORDER_QTY) INTO sold_qty FROM suborder_table WHERE SUBORDER_FOOD_ID = food_id;
+END;
+
+
